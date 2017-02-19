@@ -26,7 +26,7 @@ APlayerPawn::APlayerPawn() : CameraHeight(1000.0f),
 	// Setup the partile system for stealth.
 	StealthParticleSystem = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("StealthParticles"));
 	StealthParticleSystem->SetupAttachment(RootComponent);
-	StealthParticleSystem->bAutoActivate = true;
+	StealthParticleSystem->bAutoActivate = false;
 
 	// Spring arm for the camera.
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraAttachmentArm"));
