@@ -54,7 +54,7 @@ void APlayerPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
-	/// Apply any changes made in the BP editor.
+	/// Apply changes made in the editor.
 	SpringArm->TargetArmLength = CameraHeight;
 }
 

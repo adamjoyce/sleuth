@@ -3,6 +3,15 @@
 #include "Sleuth.h"
 #include "PlayerPawnMovementComponent.h"
 
+UPlayerPawnMovementComponent::UPlayerPawnMovementComponent() : PawnSpeed(1000.0f) {}
+
+// Called when the game starts or when spawned.
+void UPlayerPawnMovementComponent::BeginPlay()
+{
+	Super::BeginPlay();
+
+
+}
 
 void UPlayerPawnMovementComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
@@ -15,7 +24,7 @@ void UPlayerPawnMovementComponent::TickComponent(float DeltaTime, enum ELevelTic
 	}
 
 	// Get (and then clear) the movement vector.
-	FVector DesiredMovementThisFrame = ConsumeInputVector().GetClampedToMaxSize(1.0f) * DeltaTime * 150.0f;
+	FVector DesiredMovementThisFrame = ConsumeInputVector().GetClampedToMaxSize(1.0f) * DeltaTime * PawnSpeed;
 	if (!DesiredMovementThisFrame.IsNearlyZero())
 	{
 		FHitResult Hit;

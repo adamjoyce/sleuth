@@ -20,12 +20,16 @@ public:
 	float CameraHeight;
 
 	// Visual mesh for pawn.
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* SphereMesh;
 
 	// Stealth particle system.
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere)
 	UParticleSystemComponent* StealthParticleSystem;
+
+	// Player movement component.
+	UPROPERTY(EditAnywhere)
+	class UPlayerPawnMovementComponent* MovementComponent;
 
 	// Called when the game starts or when spawned.
 	virtual void BeginPlay() override;
@@ -57,9 +61,6 @@ private:
 
 	// Spring arm for smooth camera transistions.
 	USpringArmComponent* SpringArm;
-
-	// Player movement component.
-	class UPlayerPawnMovementComponent* MovementComponent;
 
 	// Moves the pawn along its forward vector.
 	void MoveForward(float AxisValue);
