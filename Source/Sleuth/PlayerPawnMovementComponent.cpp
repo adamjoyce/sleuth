@@ -13,17 +13,18 @@ void UPlayerPawnMovementComponent::BeginPlay()
 
 }
 
+// Called every frame.
 void UPlayerPawnMovementComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// Ensure we are still allowed to move.
+	/// Ensure we are still allowed to move.
 	if (!PawnOwner || !UpdatedComponent || ShouldSkipUpdate(DeltaTime))
 	{
 		return;
 	}
 
-	// Get (and then clear) the movement vector.
+	/// Get (and then clear) the movement vector.
 	FVector DesiredMovementThisFrame = ConsumeInputVector().GetClampedToMaxSize(1.0f) * DeltaTime * PawnSpeed;
 	if (!DesiredMovementThisFrame.IsNearlyZero())
 	{
