@@ -5,6 +5,7 @@
 #include "GameFramework/Pawn.h"
 #include "PlayerPawn.generated.h"
 
+
 UCLASS()
 class SLEUTH_API APlayerPawn : public APawn
 {
@@ -35,6 +36,9 @@ public:
 	// Called to bind functionality to input.
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
+	// Returns custom pawn movement component.
+	virtual UPawnMovementComponent* GetMovementComponent() const override;
+
 private:
 	// Camera rotation attached to spring arm.
 	FRotator CameraRotation;
@@ -53,4 +57,13 @@ private:
 
 	// Spring arm for smooth camera transistions.
 	USpringArmComponent* SpringArm;
+
+	// Player movement component.
+	class UPlayerPawnMovementComponent* MovementComponent;
+
+	// Moves the pawn along its forward vector.
+	void MoveForward(float AxisValue);
+
+	// Moves the pawn along its right vector.
+	void MoveRight(float AxisValue);
 };
