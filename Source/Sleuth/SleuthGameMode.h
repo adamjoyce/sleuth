@@ -12,8 +12,4 @@ UCLASS()
 class SLEUTH_API ASleuthGameMode : public AGameMode
 {
 	GENERATED_BODY()
-	
-	
-	
-	
 };

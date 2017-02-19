@@ -1,8 +1,5 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Adam Joyce 2017.
 
 #include "Sleuth.h"
 #include "SleuthGameMode.h"
-
-
-
 
