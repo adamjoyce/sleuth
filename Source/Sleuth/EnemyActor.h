@@ -25,6 +25,16 @@ public:
 	virtual void Tick( float DeltaSeconds ) override;
 
 private:
+	// The actor's movement speed.
+	UPROPERTY(EditAnywhere, Category="Movement")
+	float MoveSpeed;
+
+	// Random direction vector deviation.
+	FVector WanderTarget;
+
 	// Root component that reacts to physics.
 	UBoxComponent* BoxComponent;
+
+	// Generates a random binomial between -1.0f and 1.0f with a imbalance towards 0.0f.
+	const float RandomBinomial();
 };
