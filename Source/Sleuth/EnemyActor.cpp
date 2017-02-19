@@ -17,8 +17,13 @@ AEnemyActor::AEnemyActor() : MoveSpeed(300.0f),
 	RootComponent = BoxComponent;
 
 	// Setup a visible mesh component.
-	CubeMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisibleMeshComponent"));
+	CubeMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("EnemyMesh"));
 	CubeMesh->SetupAttachment(RootComponent);
+
+	// Line of sight vision cone component.
+	VisionCone = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LOSMesh"));
+	VisionCone->SetupAttachment(RootComponent);
+	VisionCone->SetRelativeLocation(FVector(50.0f, 0.0f, 0.0f));
 }
 
 // Called when the game starts or when spawned.
@@ -34,7 +39,7 @@ void AEnemyActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	float WanderRadius = 2.0f;
-	float WanderDistance = 100.0f;
+	float WanderDistance = 20.0f;
 	float Jitter = 10.0f;
 
 	// Get a random 2D vector direction.

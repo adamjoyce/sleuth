@@ -18,6 +18,10 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* CubeMesh;
 
+	// Visual mesh component.
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* VisionCone;
+
 	// Called when the game starts or when spawned.
 	virtual void BeginPlay() override;
 	
