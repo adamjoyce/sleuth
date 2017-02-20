@@ -10,7 +10,8 @@
 
 
 AEnemyAIController::AEnemyAIController() : TargetEnemyKeyName("TargetEnemy"),
-										   TargetLocationKeyName("TargetLocation")
+										   TargetLocationKeyName("TargetLocation"),
+										   HomeLocationKeyName("HomeLocation")
 {
 	BehaviorComponent = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehaviorComponent"));
 	BlackboardComponent = CreateDefaultSubobject<UBlackboardComponent>(TEXT("BlackboardComponent"));
@@ -67,5 +68,13 @@ void AEnemyAIController::SetTargetLocation()
 		{
 			BlackboardComponent->SetValueAsVector(TargetLocationKeyName, TargetEnemy->GetActorLocation());
 		}
+	}
+}
+
+void AEnemyAIController::SetHomeLocation(APawn* TargetPawn)
+{
+	if (BlackboardComponent)
+	{
+		BlackboardComponent->SetValueAsVector(HomeLocationKeyName, TargetPawn->GetActorLocation());
 	}
 }

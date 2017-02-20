@@ -9,7 +9,7 @@
 
 AEnemyCharacter::AEnemyCharacter() : LastSeenTime(0.0f),
 									 bSensedTarget(false),
-									 SenseTimeOut(2.5f)
+									 SenseTimeOut(0.5f)
 {
  	/// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -29,6 +29,13 @@ void AEnemyCharacter::BeginPlay()
 	{
 		PawnSensingComponent->OnSeePawn.AddDynamic(this, &AEnemyCharacter::OnSeePlayer);
 	}
+
+	/// Push the home location to the blackboard.
+	AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
+	if (AIController)
+	{
+		AIController->SetHomeLocation(this);
+	}
 }
 
 void AEnemyCharacter::Tick( float DeltaTime )
@@ -45,13 +52,13 @@ void AEnemyCharacter::Tick( float DeltaTime )
 			/// Reset the target.
 			bSensedTarget = false;
 			AIController->SetTargetEnemy(nullptr);
-			AIController->SetTargetLocation();
+			//AIController->SetTargetLocation();
 		} 
-		else if (bSensedTarget)
-		{
-			/// Update the player's location.
-			AIController->SetTargetLocation();
-		}
+		//else if (bSensedTarget)
+		//{
+		//	/// Update the player's location.
+		//	AIController->SetTargetLocation();
+		//}
 	}
 }
 
@@ -65,7 +72,7 @@ void AEnemyCharacter::OnSeePlayer(APawn* Pawn)
 
 	/// If AI Controller assigned and sensed pawn is alive, set target enemy in AI Controller...
 	AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
-	if (AIController && AIController->GetTargetEnemy() == nullptr)
+	if (AIController)
 	{
 		AIController->SetTargetEnemy(Pawn);
 		AIController->SetTargetLocation();

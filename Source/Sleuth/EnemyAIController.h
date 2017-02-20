@@ -20,6 +20,10 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category="AI")
 	FName TargetLocationKeyName;
 
+	/* Blackboard key name for the target location. */
+	UPROPERTY(EditDefaultsOnly, Category="AI")
+	FName HomeLocationKeyName;
+
 	/* The behaviour tree component. */
 	UBehaviorTreeComponent* BehaviorComponent;
 
@@ -43,4 +47,7 @@ public:
 
 	/* Pushes the target location to the blackboard. */
 	void SetTargetLocation();
+
+	/* Puches the home location to the blackboard. */
+	void SetHomeLocation(APawn* TargetPawn);
 };
