@@ -13,7 +13,8 @@
 AEnemyAIController::AEnemyAIController() : TargetEnemyKeyName("TargetEnemy"),
 										   TargetLocationKeyName("TargetLocation"),
 										   HomeLocationKeyName("HomeLocation"),
-										   BotTypeKeyName("BotType")
+										   BotTypeKeyName("BotType"),
+										   CurrentWaypointKeyName("CurrentWaypoint")
 {
 	BehaviorComponent = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehaviorComponent"));
 	BlackboardComponent = CreateDefaultSubobject<UBlackboardComponent>(TEXT("BlackboardComponent"));
@@ -56,11 +57,29 @@ APawn* AEnemyAIController::GetTargetEnemy()
 	return nullptr;
 }
 
+ABotWaypoint* AEnemyAIController::GetWaypoint()
+{
+	if (BlackboardComponent)
+	{
+		return Cast<ABotWaypoint>(BlackboardComponent->GetValueAsObject(CurrentWaypointKeyName));
+	}
+
+	return nullptr;
+}
+
 void AEnemyAIController::SetTargetEnemy(APawn* NewTarget)
 {
 	if (BlackboardComponent)
 	{
 		BlackboardComponent->SetValueAsObject(TargetEnemyKeyName, NewTarget);
+	}
+}
+
+void AEnemyAIController::SetWaypoint(ABotWaypoint* NewWaypoint)
+{
+	if (BlackboardComponent)
+	{
+		BlackboardComponent->SetValueAsObject(CurrentWaypointKeyName, NewWaypoint);
 	}
 }
 

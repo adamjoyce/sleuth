@@ -6,6 +6,7 @@
 #include "Types.h"
 
 #include "AIController.h"
+#include "BotWaypoint.h"
 #include "EnemyAIController.generated.h"
 
 
@@ -30,6 +31,10 @@ class SLEUTH_API AEnemyAIController : public AAIController
 	UPROPERTY(EditDefaultsOnly, Category="AI")
 	FName BotTypeKeyName;
 
+	/* Blackboard key name for the current waypoint. */
+	UPROPERTY(EditDefaultsOnly, Category="AI")
+	FName CurrentWaypointKeyName;
+
 	/* The behaviour tree component. */
 	UBehaviorTreeComponent* BehaviorComponent;
 
@@ -48,8 +53,14 @@ public:
 	/* Returns the target enemy stored in the blackboard. */
 	APawn* GetTargetEnemy();
 
+	/* Returns the current waypoint stored in the blackboard. */
+	ABotWaypoint* GetWaypoint();
+
 	/* Pushes the target enemy to the blackboard. */
 	void SetTargetEnemy(APawn* NewTarget);
+
+	/* Pushes the current waypoint to the blackboard. */
+	void SetWaypoint(ABotWaypoint* NewWaypoint);
 
 	/* Pushes the target location to the blackboard. */
 	void SetTargetLocation();

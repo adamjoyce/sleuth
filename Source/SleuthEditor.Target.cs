@@ -21,5 +21,5 @@ public class SleuthEditorTarget : TargetRules
 		)
 	{
 		OutExtraModuleNames.AddRange( new string[] { "Sleuth" } );
-	}
+    }
 }
