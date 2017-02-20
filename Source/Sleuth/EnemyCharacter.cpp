@@ -2,23 +2,22 @@
 
 #include "Sleuth.h"
 #include "EnemyCharacter.h"
+#include "EnemyAIController.h"
 
 #include "Perception/PawnSensingComponent.h"
 
 
-// Sets default values
 AEnemyCharacter::AEnemyCharacter() : LastSeenTime(0.0f)
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+ 	/// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	/// The senseing component used to detect players by visibility checks.
+	/// The sensing component used to detect players by visibility checks.
 	PawnSensingComponent = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComponent"));
 	PawnSensingComponent->SetPeripheralVisionAngle(60.0f);
 	PawnSensingComponent->SightRadius = 2000;
 }
 
-// Called when the game starts or when spawned.
 void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -30,14 +29,12 @@ void AEnemyCharacter::BeginPlay()
 	}
 }
 
-// Called every frame.
 void AEnemyCharacter::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
 }
 
-// Triggered by the pawn sensing component when a pawn is spotted.
 void AEnemyCharacter::OnSeePlayer(APawn* Pawn)
 {
 	/// If this pawn is alive...
@@ -46,5 +43,10 @@ void AEnemyCharacter::OnSeePlayer(APawn* Pawn)
 	LastSeenTime = GetWorld()->GetTimeSeconds();
 
 	/// If AI Controller assigned and sensed pawn is alive, set target enemy in AI Controller...
+	AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
+	if (AIController)
+	{
+		AIController->SetTargetEnemy(Pawn);
+	}
 }
 
