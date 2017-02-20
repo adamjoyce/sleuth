@@ -7,6 +7,9 @@
 
 // Sets default values.
 AEnemyActor::AEnemyActor() : MoveSpeed(300.0f),
+							 WanderTargetRadius(2.0f),
+							 WanderTargetDistance(30.0f),
+							 WanderTargetJitter(10.0f),
 							 WanderTarget(FVector(0.0f, 0.0f, 0.0f))
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -38,20 +41,22 @@ void AEnemyActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	float WanderRadius = 2.0f;
-	float WanderDistance = 20.0f;
-	float Jitter = 10.0f;
-
-	// Get a random 2D vector direction.
-	WanderTarget += FVector(RandomBinomial() * Jitter, RandomBinomial() * Jitter, 0.0f);
+	// Get a random 2D deviation vector direction.
+	WanderTarget += FVector(RandomBinomial() * WanderTargetJitter, RandomBinomial() * WanderTargetJitter, 0.0f);
 	WanderTarget = WanderTarget.GetSafeNormal2D();
-	WanderTarget *= WanderRadius;
 
-	FVector TargetInLocalSpace = WanderTarget + FVector(WanderDistance, 0.0f, 0.0f);
+	// Make the vector length the same as the 'wander' circle's radius.
+	WanderTarget *= WanderTargetRadius;
+
+	// Projects the circle out infront of the actor.
+	FVector TargetInLocalSpace = WanderTarget + FVector(WanderTargetDistance, 0.0f, 0.0f);
 	FVector TargetInWorldSpace = UKismetMathLibrary::TransformLocation(RootComponent->GetComponentTransform(), TargetInLocalSpace);
+
+	// Steer the actor towards the target on the circle.
 	TargetInWorldSpace -= GetActorLocation();
 	TargetInWorldSpace = TargetInWorldSpace.GetSafeNormal2D();
 
+	// Move the actor.
 	FVector Movement = TargetInWorldSpace * MoveSpeed * DeltaTime;
 	FHitResult Hit(1.0f);
 	RootComponent->MoveComponent(Movement, Movement.Rotation(), true, &Hit);

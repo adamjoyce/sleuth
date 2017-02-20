@@ -33,6 +33,20 @@ private:
 	UPROPERTY(EditAnywhere, Category="Movement")
 	float MoveSpeed;
 
+	/* --- MAKE CONSTANT ONCE HAPPY WITH VALUES --- */
+	// The radius of the sphere used to determine a new wander target vector.
+	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+	float WanderTargetRadius;
+
+	// The distance the wander target sphere is projected infront of the actor.
+	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+	float WanderTargetDistance;
+
+	// Jitter for the wander target vector.
+	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+	float WanderTargetJitter;
+	/* --- MAKE CONSTANT ONCE HAPPY WITH VALUES --- */
+
 	// Random direction vector deviation.
 	FVector WanderTarget;
 
