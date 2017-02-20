@@ -7,7 +7,9 @@
 #include "Perception/PawnSensingComponent.h"
 
 
-AEnemyCharacter::AEnemyCharacter() : LastSeenTime(0.0f)
+AEnemyCharacter::AEnemyCharacter() : LastSeenTime(0.0f),
+									 bSensedTarget(false),
+									 SenseTimeOut(2.5f)
 {
  	/// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -33,6 +35,18 @@ void AEnemyCharacter::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
+	/// Check if the last time we sensed a player is beyond the time out value.
+	/// Prevents the bot endlessly following the player.
+	if (bSensedTarget && (GetWorld()->TimeSeconds - LastSeenTime) > SenseTimeOut)
+	{
+		AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
+		if (AIController)
+		{
+			/// Reset the target.
+			bSensedTarget = false;
+			AIController->SetTargetEnemy(nullptr);
+		}
+	}
 }
 
 void AEnemyCharacter::OnSeePlayer(APawn* Pawn)
@@ -40,6 +54,7 @@ void AEnemyCharacter::OnSeePlayer(APawn* Pawn)
 	/// If this pawn is alive...
 
 	/// Keep track of the time the player was last sensed in order to clear the target.
+	bSensedTarget = true;
 	LastSeenTime = GetWorld()->GetTimeSeconds();
 
 	/// If AI Controller assigned and sensed pawn is alive, set target enemy in AI Controller...
