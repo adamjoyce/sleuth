@@ -9,7 +9,8 @@
 #include "BehaviorTree/BlackboardComponent.h"
 
 
-AEnemyAIController::AEnemyAIController()
+AEnemyAIController::AEnemyAIController() : TargetEnemyKeyName("TargetEnemy"),
+										   TargetLocationKeyName("TargetLocation")
 {
 	BehaviorComponent = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehaviorComponent"));
 	BlackboardComponent = CreateDefaultSubobject<UBlackboardComponent>(TEXT("BlackboardComponent"));
@@ -39,10 +40,32 @@ void AEnemyAIController::UnPossess()
 	BehaviorComponent->StopTree();
 }
 
+APawn* AEnemyAIController::GetTargetEnemy()
+{
+	if (BlackboardComponent)
+	{
+		return Cast<APawn>(BlackboardComponent->GetValueAsObject(TargetEnemyKeyName));
+	}
+
+	return nullptr;
+}
+
 void AEnemyAIController::SetTargetEnemy(APawn* NewTarget)
 {
 	if (BlackboardComponent)
 	{
-		BlackboardComponent->SetValueAsObject(TEXT("TargetEnemy"), NewTarget);
+		BlackboardComponent->SetValueAsObject(TargetEnemyKeyName, NewTarget);
+	}
+}
+
+void AEnemyAIController::SetTargetLocation()
+{
+	if (BlackboardComponent)
+	{
+		APawn* TargetEnemy = GetTargetEnemy();
+		if (TargetEnemy)
+		{
+			BlackboardComponent->SetValueAsVector(TargetLocationKeyName, TargetEnemy->GetActorLocation());
+		}
 	}
 }

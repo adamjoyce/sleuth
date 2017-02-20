@@ -12,6 +12,14 @@ class SLEUTH_API AEnemyAIController : public AAIController
 	GENERATED_BODY()
 
 private:
+	/* Blackboard key name for the target player pawn. */
+	UPROPERTY(EditDefaultsOnly, Category="AI")
+	FName TargetEnemyKeyName;
+
+	/* Blackboard key name for the target location. */
+	UPROPERTY(EditDefaultsOnly, Category="AI")
+	FName TargetLocationKeyName;
+
 	/* The behaviour tree component. */
 	UBehaviorTreeComponent* BehaviorComponent;
 
@@ -27,6 +35,12 @@ private:
 public:
 	AEnemyAIController();
 
+	/* Returns the target enemy stored in the blackboard. */
+	APawn* GetTargetEnemy();
+
 	/* Pushes the target enemy to the blackboard. */
 	void SetTargetEnemy(APawn* NewTarget);
+
+	/* Pushes the target location to the blackboard. */
+	void SetTargetLocation();
 };

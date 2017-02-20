@@ -35,16 +35,22 @@ void AEnemyCharacter::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
-	/// Check if the last time we sensed a player is beyond the time out value.
-	/// Prevents the bot endlessly following the player.
-	if (bSensedTarget && (GetWorld()->TimeSeconds - LastSeenTime) > SenseTimeOut)
+	AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
+	if (AIController)
 	{
-		AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
-		if (AIController)
+		/// Check if the last time we sensed a player is beyond the time out value.
+		/// Prevents the bot endlessly following the player.
+		if (bSensedTarget && (GetWorld()->TimeSeconds - LastSeenTime) > SenseTimeOut)
 		{
 			/// Reset the target.
 			bSensedTarget = false;
 			AIController->SetTargetEnemy(nullptr);
+			AIController->SetTargetLocation();
+		} 
+		else if (bSensedTarget)
+		{
+			/// Update the player's location.
+			AIController->SetTargetLocation();
 		}
 	}
 }
@@ -59,9 +65,10 @@ void AEnemyCharacter::OnSeePlayer(APawn* Pawn)
 
 	/// If AI Controller assigned and sensed pawn is alive, set target enemy in AI Controller...
 	AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
-	if (AIController)
+	if (AIController && AIController->GetTargetEnemy() == nullptr)
 	{
 		AIController->SetTargetEnemy(Pawn);
+		AIController->SetTargetLocation();
 	}
 }
 
