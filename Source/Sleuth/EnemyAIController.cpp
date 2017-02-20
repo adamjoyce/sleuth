@@ -3,6 +3,7 @@
 #include "Sleuth.h"
 #include "EnemyAIController.h"
 #include "EnemyCharacter.h"
+#include "Types.h"
 
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
@@ -11,7 +12,8 @@
 
 AEnemyAIController::AEnemyAIController() : TargetEnemyKeyName("TargetEnemy"),
 										   TargetLocationKeyName("TargetLocation"),
-										   HomeLocationKeyName("HomeLocation")
+										   HomeLocationKeyName("HomeLocation"),
+										   BotTypeKeyName("BotType")
 {
 	BehaviorComponent = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehaviorComponent"));
 	BlackboardComponent = CreateDefaultSubobject<UBlackboardComponent>(TEXT("BlackboardComponent"));
@@ -27,6 +29,9 @@ void AEnemyAIController::Possess(APawn* InPawn)
 		if (EnemyBot->BehaviorTree->BlackboardAsset)
 		{
 			BlackboardComponent->InitializeBlackboard(*EnemyBot->BehaviorTree->BlackboardAsset);
+
+			/// Make sure blackboard has the type of the bot we possessed.
+			SetBlackboardBotType(EnemyBot->BotType);
 		}
 
 		BehaviorComponent->StartTree(*EnemyBot->BehaviorTree);
@@ -76,5 +81,13 @@ void AEnemyAIController::SetHomeLocation(APawn* TargetPawn)
 	if (BlackboardComponent)
 	{
 		BlackboardComponent->SetValueAsVector(HomeLocationKeyName, TargetPawn->GetActorLocation());
+	}
+}
+
+void AEnemyAIController::SetBlackboardBotType(EBotBehaviorType NewType)
+{
+	if (BlackboardComponent)
+	{
+		BlackboardComponent->SetValueAsEnum(BotTypeKeyName, (uint8)(NewType));
 	}
 }

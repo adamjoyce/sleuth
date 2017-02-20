@@ -2,6 +2,9 @@
 
 #pragma once
 
+/* Included to avoid Engine bug involving using ENUMs with UPROPERTY. */
+#include "Types.h"
+
 #include "AIController.h"
 #include "EnemyAIController.generated.h"
 
@@ -11,7 +14,6 @@ class SLEUTH_API AEnemyAIController : public AAIController
 {
 	GENERATED_BODY()
 
-private:
 	/* Blackboard key name for the target player pawn. */
 	UPROPERTY(EditDefaultsOnly, Category="AI")
 	FName TargetEnemyKeyName;
@@ -23,6 +25,10 @@ private:
 	/* Blackboard key name for the target location. */
 	UPROPERTY(EditDefaultsOnly, Category="AI")
 	FName HomeLocationKeyName;
+
+	/* Blackboard key name for the target location. */
+	UPROPERTY(EditDefaultsOnly, Category="AI")
+	FName BotTypeKeyName;
 
 	/* The behaviour tree component. */
 	UBehaviorTreeComponent* BehaviorComponent;
@@ -50,4 +56,6 @@ public:
 
 	/* Puches the home location to the blackboard. */
 	void SetHomeLocation(APawn* TargetPawn);
+
+	void SetBlackboardBotType(EBotBehaviorType NewType);
 };

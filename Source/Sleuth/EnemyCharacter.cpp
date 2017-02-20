@@ -3,13 +3,15 @@
 #include "Sleuth.h"
 #include "EnemyCharacter.h"
 #include "EnemyAIController.h"
+#include "Types.h"
 
 #include "Perception/PawnSensingComponent.h"
 
 
 AEnemyCharacter::AEnemyCharacter() : LastSeenTime(0.0f),
 									 bSensedTarget(false),
-									 SenseTimeOut(0.5f)
+									 SenseTimeOut(2.5f),
+									 BotType(EBotBehaviorType::Passive)
 {
  	/// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -76,6 +78,16 @@ void AEnemyCharacter::OnSeePlayer(APawn* Pawn)
 	{
 		AIController->SetTargetEnemy(Pawn);
 		AIController->SetTargetLocation();
+	}
+}
+
+void AEnemyCharacter::SetBotType(EBotBehaviorType NewType)
+{
+	BotType = NewType;
+	AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
+	if (AIController)
+	{
+		AIController->SetBlackboardBotType(NewType);
 	}
 }
 

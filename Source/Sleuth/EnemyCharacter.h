@@ -2,6 +2,9 @@
 
 #pragma once
 
+/* Included to avoid Engine bug involving using ENUMs with UPROPERTY. */
+#include "Types.h"
+
 #include "GameFramework/Character.h"
 #include "EnemyCharacter.generated.h"
 
@@ -24,6 +27,12 @@ class SLEUTH_API AEnemyCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	class UPawnSensingComponent* PawnSensingComponent;
 
+	/* Called when the game starts or when spawned. */
+	virtual void BeginPlay() override;
+
+	/* Called every frame. */
+	virtual void Tick(float DeltaSeconds) override;
+
 protected:
 	/* Triggered by the pawn sensing component when a pawn is spotted. */
 	UFUNCTION()
@@ -38,10 +47,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
 	class UBehaviorTree* BehaviorTree;
 
-	/* Called when the game starts or when spawned. */
-	virtual void BeginPlay() override;
+	/* The bot behavior this bot will execute (passive/patrol). */
+	UPROPERTY(EditAnywhere, Category="AI")
+	EBotBehaviorType BotType;
 
-	/* Called every frame. */
-	virtual void Tick(float DeltaSeconds) override;
-
+	/* Change the default bot type during gameplay. */
+	void SetBotType(EBotBehaviorType NewType);
 };
