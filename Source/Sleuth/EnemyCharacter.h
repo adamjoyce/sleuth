@@ -24,7 +24,7 @@ class SLEUTH_API AEnemyCharacter : public ACharacter
 	float SenseTimeOut;
 
 	/* Handles the enemy's senses. */
-	UPROPERTY(VisibleAnywhere, Category = "AI")
+	UPROPERTY(VisibleAnywhere, Category="AI")
 	class UPawnSensingComponent* PawnSensingComponent;
 
 	/* Called when the game starts or when spawned. */
