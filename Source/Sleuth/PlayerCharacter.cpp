@@ -15,11 +15,8 @@ APlayerCharacter::APlayerCharacter() : MovementSpeed(2000.0f),
 
 	/// Create the character's visible mesh.
 	SphereMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisibleMesh"));
-	SphereMesh->SetCollisionProfileName("IgnoreOnlyPawn");
-
-	/// Create the character's visible sight cone mesh.
-	SightMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SightConeMesh"));
-	SightMesh->SetCollisionProfileName("IgnoreOnlyPawn");
+	SphereMesh->SetupAttachment(RootComponent);
+	SphereMesh->SetCollisionProfileName("NoCollision");
 
 	/// Spring arm for the camera.
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraAttachmentArm"));

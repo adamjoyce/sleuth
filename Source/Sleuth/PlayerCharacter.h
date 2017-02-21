@@ -39,10 +39,6 @@ class SLEUTH_API APlayerCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* SphereMesh;
 
-	// Visual mesh for pawn's sight cone.
-	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* SightMesh;
-
 	// Called when the game starts or when spawned.
 	virtual void BeginPlay() override;
 
