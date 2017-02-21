@@ -2,11 +2,11 @@
 
 #pragma once
 
-#include "GameFramework/Character.h"
+#include "BaseCharacter.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
-class SLEUTH_API APlayerCharacter : public ACharacter
+class SLEUTH_API APlayerCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 

@@ -5,11 +5,11 @@
 /* Included to avoid Engine bug involving using ENUMs with UPROPERTY. */
 #include "Types.h"
 
-#include "GameFramework/Character.h"
+#include "BaseCharacter.h"
 #include "EnemyCharacter.generated.h"
 
 UCLASS()
-class SLEUTH_API AEnemyCharacter : public ACharacter
+class SLEUTH_API AEnemyCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 
