@@ -57,9 +57,11 @@ private:
 	USphereComponent* SphereComponent;
 
 	// Player camera.
+	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* Camera;
 
 	// Spring arm for smooth camera transistions.
+	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArm;
 
 	// Moves the pawn along its forward vector.

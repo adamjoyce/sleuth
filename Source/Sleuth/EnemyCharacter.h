@@ -23,7 +23,7 @@ class SLEUTH_API AEnemyCharacter : public ACharacter
 	/* Should be higher than sense interval in PawnSense to avoid missing sense ticks. */
 	float SenseTimeOut;
 
-	/* Handles the enemy's senses. */
+	///* Handles the enemy's senses. */
 	UPROPERTY(VisibleAnywhere, Category="AI")
 	class UPawnSensingComponent* PawnSensingComponent;
 

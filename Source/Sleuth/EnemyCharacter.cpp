@@ -54,13 +54,7 @@ void AEnemyCharacter::Tick( float DeltaTime )
 			/// Reset the target.
 			bSensedTarget = false;
 			AIController->SetTargetEnemy(nullptr);
-			//AIController->SetTargetLocation();
 		} 
-		//else if (bSensedTarget)
-		//{
-		//	/// Update the player's location.
-		//	AIController->SetTargetLocation();
-		//}
 	}
 }
 
