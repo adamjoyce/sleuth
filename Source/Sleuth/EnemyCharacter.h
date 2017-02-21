@@ -23,9 +23,21 @@ class SLEUTH_API AEnemyCharacter : public ACharacter
 	/* Should be higher than sense interval in PawnSense to avoid missing sense ticks. */
 	float SenseTimeOut;
 
-	///* Handles the enemy's senses. */
+	/* Handles the enemy's senses. */
 	UPROPERTY(VisibleAnywhere, Category="AI")
 	class UPawnSensingComponent* PawnSensingComponent;
+
+	/* Mesh for visbility in the scene. */
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* VisibleMesh;
+
+	/* Mesh for sight cone in the scene. */
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* SightMesh;
+
+	/* Materials for the sight cone. */
+	UPROPERTY(EditDefaultsOnly, Category="Materials")
+	TArray<UMaterial*> Materials;
 
 	/* Called when the game starts or when spawned. */
 	virtual void BeginPlay() override;

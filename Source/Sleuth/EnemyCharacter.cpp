@@ -20,6 +20,19 @@ AEnemyCharacter::AEnemyCharacter() : LastSeenTime(0.0f),
 	PawnSensingComponent = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComponent"));
 	PawnSensingComponent->SetPeripheralVisionAngle(60.0f);
 	PawnSensingComponent->SightRadius = 2000;
+
+	/// Create the visibility mesh.
+	VisibleMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisibleMesh"));
+	VisibleMesh->SetupAttachment(RootComponent);
+	VisibleMesh->SetCollisionProfileName("NoCollision");
+
+	/// Create the sight cone mesh.
+	SightMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SightMesh"));
+	SightMesh->SetupAttachment(RootComponent);
+	SightMesh->SetCollisionProfileName("NoCollision");
+
+	/// Populate materials.
+	Materials.Init(nullptr, 2);
 }
 
 void AEnemyCharacter::BeginPlay()
@@ -54,6 +67,7 @@ void AEnemyCharacter::Tick( float DeltaTime )
 			/// Reset the target.
 			bSensedTarget = false;
 			AIController->SetTargetEnemy(nullptr);
+			SightMesh->SetMaterial(0, Materials[0]);
 		} 
 	}
 }
@@ -73,6 +87,9 @@ void AEnemyCharacter::OnSeePlayer(APawn* Pawn)
 		AIController->SetTargetEnemy(Pawn);
 		AIController->SetTargetLocation();
 	}
+
+	/// Set the chasing material to the sight cone.
+	SightMesh->SetMaterial(0, Materials[1]);
 }
 
 void AEnemyCharacter::SetBotType(EBotBehaviorType NewType)
