@@ -15,10 +15,18 @@ public:
 	ABaseCharacter();
 
 	/* Returns the player's current health. */
+	UFUNCTION()
 	float GetHealth() const;
+
+	/* Is the character above zero health? */
+	UFUNCTION()
+	bool IsAlive() const;
 
 protected:
 	/* The character's health pool - zero means game over. */
-	UPROPERTY(EditDefaultsOnly, Category = "PlayerCondition")
+	UPROPERTY(EditAnywhere, Category = "PlayerCondition")
 	float Health;
+
+	/* Damage. */
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;
 };

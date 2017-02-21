@@ -32,9 +32,6 @@ APlayerCharacter::APlayerCharacter() : MovementSpeed(2000.0f),
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 
 	GetCharacterMovement()->MaxWalkSpeed = MovementSpeed;
-
-	///// Take control of the default player.
-	//AutoPossessPlayer = EAutoReceiveInput::Player0;
 }
 
 // Called when the game starts or when spawned.

@@ -9,8 +9,11 @@
 
 
 AEnemyCharacter::AEnemyCharacter() : LastSeenTime(0.0f),
+									 LastHealthDrainTime(0.0f),
 									 bSensedTarget(false),
 									 SenseTimeOut(2.5f),
+									 HealthDrainCooldown(2.5f),
+									 HealthDrainDamage(10.0f),
 									 BotType(EBotBehaviorType::Passive)
 {
  	/// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -74,22 +77,53 @@ void AEnemyCharacter::Tick( float DeltaTime )
 
 void AEnemyCharacter::OnSeePlayer(APawn* Pawn)
 {
-	/// If this pawn is alive...
+	/// Return if this enemy is dead.
+	if (!IsAlive())
+	{
+		return;
+	}
 
 	/// Keep track of the time the player was last sensed in order to clear the target.
 	bSensedTarget = true;
 	LastSeenTime = GetWorld()->GetTimeSeconds();
 
-	/// If AI Controller assigned and sensed pawn is alive, set target enemy in AI Controller...
+	/// If AI Controller assigned and sensed pawn is alive, set target enemy in AI Controller.
 	AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
-	if (AIController)
+	ABaseCharacter* SensedPawn = Cast<ABaseCharacter>(Pawn);
+	if (AIController && SensedPawn->IsAlive())
 	{
 		AIController->SetTargetEnemy(Pawn);
 		AIController->SetTargetLocation();
+
+		/// Start draining health.
+		PerformHealthDrain(SensedPawn);
 	}
 
 	/// Set the chasing material to the sight cone.
 	SightMesh->SetMaterial(0, Materials[1]);
+}
+
+void AEnemyCharacter::PerformHealthDrain(AActor* HitActor)
+{
+	/// Avoid attacking too often.
+	if (LastHealthDrainTime > GetWorld()->GetTimeSeconds() - HealthDrainCooldown)
+	{
+		return;
+	}
+
+	if (HitActor && HitActor != this && IsAlive())
+	{
+		ACharacter* OtherPawn = Cast<ACharacter>(HitActor);
+		if (OtherPawn)
+		{
+			LastHealthDrainTime = GetWorld()->GetTimeSeconds();
+
+			FDamageEvent DamageEvent;
+			HitActor->TakeDamage(HealthDrainDamage, DamageEvent, GetController(), this);
+
+			/// Play drain animation here...
+		}
+	}
 }
 
 void AEnemyCharacter::SetBotType(EBotBehaviorType NewType)

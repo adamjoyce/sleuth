@@ -16,6 +16,9 @@ class SLEUTH_API AEnemyCharacter : public ABaseCharacter
 	/* Last time the player was spotted. */
 	float LastSeenTime;
 
+	/* Last time the enemy drained the player's health. */
+	float LastHealthDrainTime;
+
 	/* Resets after sense time-out to avoid unecessary clearing of target each tick. */
 	bool bSensedTarget;
 
@@ -23,8 +26,15 @@ class SLEUTH_API AEnemyCharacter : public ABaseCharacter
 	/* Should be higher than sense interval in PawnSense to avoid missing sense ticks. */
 	float SenseTimeOut;
 
+	/* Health drain interval time. */
+	float HealthDrainCooldown;
+
+	/* Amount of damage drained each 'tick'. */
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	float HealthDrainDamage;
+
 	/* Handles the enemy's senses. */
-	UPROPERTY(VisibleAnywhere, Category="AI")
+	UPROPERTY(VisibleAnywhere, Category = "AI")
 	class UPawnSensingComponent* PawnSensingComponent;
 
 	/* Mesh for visbility in the scene. */
@@ -36,7 +46,7 @@ class SLEUTH_API AEnemyCharacter : public ABaseCharacter
 	UStaticMeshComponent* SightMesh;
 
 	/* Materials for the sight cone. */
-	UPROPERTY(EditDefaultsOnly, Category="Materials")
+	UPROPERTY(EditDefaultsOnly, Category = "Materials")
 	TArray<UMaterial*> Materials;
 
 	/* Called when the game starts or when spawned. */
@@ -49,6 +59,10 @@ protected:
 	/* Triggered by the pawn sensing component when a pawn is spotted. */
 	UFUNCTION()
 	void OnSeePlayer(APawn* Pawn);
+
+	/* Drains the pawn's health. */
+	UFUNCTION()
+	void PerformHealthDrain(AActor* HitActor);
 
 public:
 	/* Sets default values for this character's properties. */
