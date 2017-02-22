@@ -5,7 +5,7 @@
 
 
 // Sets default values
-ABaseCharacter::ABaseCharacter() : Health(100.0f)
+ABaseCharacter::ABaseCharacter() : Health(20.0f)
 {
  	/* Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it. */
 	PrimaryActorTick.bCanEverTick = true;
@@ -39,10 +39,10 @@ float ABaseCharacter::TakeDamage(float Damage, struct FDamageEvent const& Damage
 			/// Temporary player respawn.
 			if (GetWorld())
 			{
-				UGameplayStatics::GetGameMode(this)->RestartPlayer(GetWorld()->GetFirstPlayerController());
+                GetWorld()->DestroyActor(this);
+				UGameplayStatics::GetGameMode(GetWorld())->RestartPlayer(GetWorld()->GetFirstPlayerController());
+                UE_LOG(LogTemp, Warning, TEXT("RESPAWN"));
 			}
-			/*GetWorld()->GetAuthGameMode()->RestartPlayer(GetWorld()->GetFirstPlayerController());*/
-			UE_LOG(LogTemp, Warning, TEXT("RESPAWN"));
 		}
 	}
 
