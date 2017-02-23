@@ -45,6 +45,10 @@ class SLEUTH_API AEnemyCharacter : public ABaseCharacter
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* SightMesh;
 
+    /* Spot light to represent cone of vision. */
+    UPROPERTY(VisibleAnywhere)
+    USpotLightComponent* VisionCone;
+
 	/* Materials for the sight cone. */
 	UPROPERTY(EditDefaultsOnly, Category = "Materials")
 	TArray<UMaterial*> Materials;

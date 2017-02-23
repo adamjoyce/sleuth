@@ -34,6 +34,10 @@ AEnemyCharacter::AEnemyCharacter() : LastSeenTime(0.0f),
 	SightMesh->SetupAttachment(RootComponent);
 	SightMesh->SetCollisionProfileName("NoCollision");
 
+    /// Create the spot light for the enemy's vision cone.
+    VisionCone = CreateDefaultSubobject<USpotLightComponent>(TEXT("VisionCone"));
+    VisionCone->SetupAttachment(RootComponent);
+
 	/// Populate materials.
 	Materials.Init(nullptr, 2);
 }
@@ -71,6 +75,7 @@ void AEnemyCharacter::Tick( float DeltaTime )
 			bSensedTarget = false;
 			AIController->SetTargetEnemy(nullptr);
 			SightMesh->SetMaterial(0, Materials[0]);
+            VisionCone->SetLightColor(FColor::Yellow);
 		} 
 	}
 }
@@ -101,6 +106,7 @@ void AEnemyCharacter::OnSeePlayer(APawn* Pawn)
 
 	/// Set the chasing material to the sight cone.
 	SightMesh->SetMaterial(0, Materials[1]);
+    VisionCone->SetLightColor(FColor::Red);
 }
 
 void AEnemyCharacter::PerformHealthDrain(AActor* HitActor)
