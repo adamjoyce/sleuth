@@ -12,8 +12,8 @@ AEnemyCharacter::AEnemyCharacter() : LastSeenTime(0.0f),
 									 LastHealthDrainTime(0.0f),
 									 bSensedTarget(false),
 									 SenseTimeOut(2.5f),
-									 HealthDrainCooldown(2.5f),
-									 HealthDrainDamage(10.0f),
+									 HealthDrainCooldown(0.1f),
+									 HealthDrainDamage(1.0f),
 									 BotType(EBotBehaviorType::Passive)
 {
  	/// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
