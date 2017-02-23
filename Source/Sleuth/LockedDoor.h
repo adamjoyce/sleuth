@@ -18,8 +18,8 @@ class SLEUTH_API ALockedDoor : public AActor
     UPROPERTY(VisibleAnywhere)
     UBoxComponent* TriggerZone;
 
-    /* Called when the game starts or when spawned. */
-    virtual void BeginPlay() override;
+    ///* Called when the game starts or when spawned. */
+    //virtual void BeginPlay() override;
 	
 public:	
 	// Sets default values for this actor's properties

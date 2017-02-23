@@ -18,13 +18,13 @@ ALockedDoor::ALockedDoor()
     TriggerZone->SetupAttachment(RootComponent);
 }
 
-void ALockedDoor::BeginPlay()
-{
-    /*if (TriggerZone)
-    {
-        TriggerZone->OnComponentBeginOverlap.AddDynamic(this, &ALockedDoor::OnOverlapBegin);
-    }*/
-}
+//void ALockedDoor::BeginPlay()
+//{
+//    /*if (TriggerZone)
+//    {
+//        TriggerZone->OnComponentBeginOverlap.AddDynamic(this, &ALockedDoor::OnOverlapBegin);
+//    }*/
+//}
 
 void ALockedDoor::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
