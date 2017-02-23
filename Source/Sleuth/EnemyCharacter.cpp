@@ -41,7 +41,7 @@ AEnemyCharacter::AEnemyCharacter() : LastSeenTime(0.0f),
 void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	/// This is the earliest moment we can bind our delegates to the component.
 	if (PawnSensingComponent)
 	{
