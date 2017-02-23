@@ -20,18 +20,18 @@ ALockedDoor::ALockedDoor()
 
 void ALockedDoor::BeginPlay()
 {
-    if (TriggerZone)
+    /*if (TriggerZone)
     {
         TriggerZone->OnComponentBeginOverlap.AddDynamic(this, &ALockedDoor::OnOverlapBegin);
-    }
+    }*/
 }
 
 void ALockedDoor::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
     /// Check the overlapping actor is the player.
-    if (OtherActor == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
+    /*if (OtherActor == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
     {
         UE_LOG(LogTemp, Warning, TEXT("OPENDOOR"));
-    }
+    }*/
 }
 
