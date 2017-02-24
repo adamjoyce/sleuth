@@ -27,6 +27,10 @@ class SLEUTH_API ALockedDoor : public AActor
     UPROPERTY(VisibleAnywhere)
     UBoxComponent* TriggerZone;
 
+    /* Materials for the sight cone. */
+    UPROPERTY(EditDefaultsOnly, Category = "Materials")
+    TArray<UMaterial*> Materials;
+
     ///* Called when the game starts or when spawned. */
     //virtual void BeginPlay() override;
 	

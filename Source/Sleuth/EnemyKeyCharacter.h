@@ -11,9 +11,11 @@
 UCLASS()
 class SLEUTH_API AEnemyKeyCharacter : public AEnemyCharacter
 {
-	GENERATED_BODY()
-	
-	
-	
-	
+    GENERATED_BODY()
+
+public:
+    AEnemyKeyCharacter();
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "LockedDoor")
+    class ALockedDoor* LockedDoor;
 };

@@ -20,6 +20,8 @@ ALockedDoor::ALockedDoor() : IsLocked(true),
     /// Create the trigger zone for the door.
     TriggerZone = CreateDefaultSubobject<UBoxComponent>(TEXT("TriggerZone"));
     TriggerZone->SetupAttachment(RootComponent);
+
+    Materials.Init(nullptr, 2);
 }
 
 //void ALockedDoor::BeginPlay()
@@ -62,6 +64,12 @@ bool ALockedDoor::GetIsLocked()
 void ALockedDoor::SetIsLocked(bool Locked)
 {
     IsLocked = Locked;
+
+    /// Change the door material depending on if it is locked.
+    if (IsLocked)
+        DoorMesh->SetMaterial(0, Materials[1]);
+    else
+        DoorMesh->SetMaterial(0, Materials[0]);
 }
 
 bool ALockedDoor::GetIsPlayerOverlapping()
