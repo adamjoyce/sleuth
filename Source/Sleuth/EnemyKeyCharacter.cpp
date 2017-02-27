@@ -7,3 +7,13 @@
 AEnemyKeyCharacter::AEnemyKeyCharacter() : LockedDoor(nullptr)
 {
 }
+
+//void AEnemyKeyCharacter::BeginPlay()
+//{
+//    Super::BeginPlay();
+//}
+//
+//void AEnemyCharacter::Tick(float DeltaTime)
+//{
+//    Super::Tick(DeltaTime);
+//}

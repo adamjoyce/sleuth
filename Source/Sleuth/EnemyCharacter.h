@@ -53,11 +53,11 @@ class SLEUTH_API AEnemyCharacter : public ABaseCharacter
 	UPROPERTY(EditDefaultsOnly, Category = "Materials")
 	TArray<UMaterial*> Materials;
 
-	/* Called when the game starts or when spawned. */
-	virtual void BeginPlay() override;
+    /* Called when the game starts or when spawned. */
+    virtual void BeginPlay() override;
 
-	/* Called every frame. */
-	virtual void Tick(float DeltaSeconds) override;
+    /* Called every frame. */
+    virtual void Tick(float DeltaSeconds) override;
 
 protected:
 	/* Triggered by the pawn sensing component when a pawn is spotted. */

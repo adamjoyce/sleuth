@@ -53,11 +53,11 @@ void AEnemyCharacter::BeginPlay()
 	}
 
 	/// Push the home location to the blackboard.
-	AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
-	if (AIController)
-	{
-		AIController->SetHomeLocation(this);
-	}
+	//AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
+	//if (AIController)
+	//{
+	//	AIController->SetHomeLocation(this);
+	//}
 }
 
 void AEnemyCharacter::Tick( float DeltaTime )
