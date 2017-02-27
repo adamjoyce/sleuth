@@ -7,7 +7,7 @@
 // Sets default values
 APlayerCharacter::APlayerCharacter() : MovementSpeed(2000.0f),
 									   CameraHeight(2000.0f),
-									   CameraRotation(FRotator(-90.0f, 0.0f, 0.0f)),
+									   CameraRotation(FRotator(-60.0f, 0.0f, 0.0f)),
 									   CameraLagSpeed(3.0f)
 {
  	/// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
