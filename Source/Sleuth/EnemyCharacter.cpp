@@ -29,11 +29,6 @@ AEnemyCharacter::AEnemyCharacter() : LastSeenTime(0.0f),
 	VisibleMesh->SetupAttachment(RootComponent);
 	VisibleMesh->SetCollisionProfileName("NoCollision");
 
-	/// Create the sight cone mesh.
-	SightMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SightMesh"));
-	SightMesh->SetupAttachment(RootComponent);
-	SightMesh->SetCollisionProfileName("NoCollision");
-
     /// Create the spot light for the enemy's vision cone.
     VisionCone = CreateDefaultSubobject<USpotLightComponent>(TEXT("VisionCone"));
     VisionCone->SetupAttachment(RootComponent);
@@ -74,7 +69,6 @@ void AEnemyCharacter::Tick( float DeltaTime )
 			/// Reset the target.
 			bSensedTarget = false;
 			AIController->SetTargetEnemy(nullptr);
-			SightMesh->SetMaterial(0, Materials[0]);
             VisionCone->SetLightColor(FColor::Yellow);
 		} 
 	}
@@ -105,7 +99,6 @@ void AEnemyCharacter::OnSeePlayer(APawn* Pawn)
 	}
 
 	/// Set the chasing material to the sight cone.
-	SightMesh->SetMaterial(0, Materials[1]);
     VisionCone->SetLightColor(FColor::Red);
 }
 
@@ -146,4 +139,3 @@ bool AEnemyCharacter::IsTargetSensed()
 {
     return bSensedTarget;
 }
-
