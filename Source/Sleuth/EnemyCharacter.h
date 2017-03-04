@@ -83,4 +83,8 @@ public:
 
 	/* Change the default bot type during gameplay. */
 	void SetBotType(EBotBehaviorType NewType);
+
+    /* Returns if a player is currently detected. */
+    UFUNCTION(BlueprintCallable, Category = "AI")
+    bool IsTargetSensed();
 };

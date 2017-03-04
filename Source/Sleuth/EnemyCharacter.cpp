@@ -142,3 +142,8 @@ void AEnemyCharacter::SetBotType(EBotBehaviorType NewType)
 	}
 }
 
+bool AEnemyCharacter::IsTargetSensed()
+{
+    return bSensedTarget;
+}
+
