@@ -14,6 +14,7 @@ AEnemyCharacter::AEnemyCharacter() : LastSeenTime(0.0f),
 									 SenseTimeOut(2.5f),
 									 HealthDrainCooldown(0.1f),
 									 HealthDrainDamage(1.0f),
+									 IsVunerable(false),
 									 BotType(EBotBehaviorType::Passive)
 {
  	/// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -146,4 +147,14 @@ void AEnemyCharacter::OnDeath()
 	{
 
 	}
+}
+
+bool AEnemyCharacter::GetIsVunerable()
+{
+	return IsVunerable;
+}
+
+void AEnemyCharacter::SetIsVunerable(bool Vunerable)
+{
+	IsVunerable = Vunerable;
 }
