@@ -139,3 +139,11 @@ bool AEnemyCharacter::IsTargetSensed()
 {
     return bSensedTarget;
 }
+
+void AEnemyCharacter::OnDeath()
+{
+	if (GetWorld())
+	{
+
+	}
+}

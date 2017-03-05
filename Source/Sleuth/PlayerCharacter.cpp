@@ -77,3 +77,14 @@ void APlayerCharacter::MoveRight(float AxisValue)
 		MovementComponent->AddInputVector(GetActorRightVector() * AxisValue);
 	}
 }
+
+void APlayerCharacter::OnDeath()
+{
+	Super::OnDeath();
+
+	/// Resets the player.
+	if (GetWorld())
+	{
+		UGameplayStatics::GetGameMode(GetWorld())->RestartPlayer(GetWorld()->GetFirstPlayerController());
+	}
+}

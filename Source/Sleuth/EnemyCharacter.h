@@ -64,6 +64,9 @@ protected:
 	UFUNCTION()
 	void PerformHealthDrain(AActor* HitActor);
 
+	/* What the character does on death. */
+	virtual void OnDeath() override;
+
 public:
 	/* Sets default values for this character's properties. */
 	AEnemyCharacter();
