@@ -36,16 +36,19 @@ float ABaseCharacter::TakeDamage(float Damage, struct FDamageEvent const& Damage
 		if (Health <= 0.0f)
 		{
 			/// Stick dying code in here...
-			/// Temporary player respawn.
-			if (GetWorld())
-			{
-                GetWorld()->DestroyActor(this);
-				UGameplayStatics::GetGameMode(GetWorld())->RestartPlayer(GetWorld()->GetFirstPlayerController());
-                UE_LOG(LogTemp, Warning, TEXT("RESPAWN"));
-			}
+			/// Maybe place checks to see if dying is possible...
+			OnDeath();
 		}
 	}
 
 	return DamageToTake;
 }
 
+void ABaseCharacter::OnDeath()
+{
+	/// By default simply destroy the actor.
+	if (GetWorld())
+	{
+		GetWorld()->DestroyActor(this);
+	}
+}

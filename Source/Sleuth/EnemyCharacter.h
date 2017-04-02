@@ -33,6 +33,10 @@ class SLEUTH_API AEnemyCharacter : public ABaseCharacter
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	float HealthDrainDamage;
 
+	/* Is the enemy vunerable to damage? */
+	UPROPERTY(VisibleAnywhere, Category = "AI")
+	bool IsVunerable;
+
 	/* Handles the enemy's senses. */
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	class UPawnSensingComponent* PawnSensingComponent;
@@ -64,6 +68,9 @@ protected:
 	UFUNCTION()
 	void PerformHealthDrain(AActor* HitActor);
 
+	/* What the character does on death. */
+	virtual void OnDeath() override;
+
 public:
 	/* Sets default values for this character's properties. */
 	AEnemyCharacter();
@@ -83,4 +90,12 @@ public:
     /* Returns if a player is currently detected. */
     UFUNCTION(BlueprintCallable, Category = "AI")
     bool IsTargetSensed();
+
+	/* Gets if the enemy is vunerable to damage. */
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	bool GetIsVunerable();
+
+	/* Sets the vunerability of the enemy (can it be damaged?). */
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	void SetIsVunerable(bool Vunerable);
 };
