@@ -14,7 +14,8 @@ AEnemyCharacter::AEnemyCharacter() : LastSeenTime(0.0f),
 									 SenseTimeOut(2.5f),
 									 HealthDrainCooldown(0.1f),
 									 HealthDrainDamage(1.0f),
-									 IsVunerable(false),
+									 IsVulnerable(false),
+									 VulnerableEmissionValue(10.0f),
 									 BotType(EBotBehaviorType::Passive)
 {
  	/// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -30,12 +31,15 @@ AEnemyCharacter::AEnemyCharacter() : LastSeenTime(0.0f),
 	VisibleMesh->SetupAttachment(RootComponent);
 	VisibleMesh->SetCollisionProfileName("NoCollision");
 
+	/// Create the weak zone at the back of the enemy.
+	WeakZone = CreateDefaultSubobject<UBoxComponent>(TEXT("WeakZone"));
+	WeakZone->SetRelativeScale3D(FVector(1.0f, 0.1f, 0.1f));
+	WeakZone->SetRelativeLocation(FVector(-83.0f, 0.0f, 0.0f));
+	WeakZone->SetupAttachment(RootComponent);
+
     /// Create the spot light for the enemy's vision cone.
     VisionCone = CreateDefaultSubobject<USpotLightComponent>(TEXT("VisionCone"));
     VisionCone->SetupAttachment(RootComponent);
-
-	/// Populate materials.
-	Materials.Init(nullptr, 2);
 }
 
 void AEnemyCharacter::BeginPlay()
@@ -48,12 +52,19 @@ void AEnemyCharacter::BeginPlay()
 		PawnSensingComponent->OnSeePawn.AddDynamic(this, &AEnemyCharacter::OnSeePlayer);
 	}
 
-	/// Push the home location to the blackboard.
-	//AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
-	//if (AIController)
-	//{
-	//	AIController->SetHomeLocation(this);
-	//}
+	if (WeakZone)
+	{
+		WeakZone->OnComponentBeginOverlap.AddDynamic(this, &AEnemyCharacter::OnOverlapBegin);
+		WeakZone->OnComponentEndOverlap.AddDynamic(this, &AEnemyCharacter::OnOverlapEnd);
+	}
+
+	/// TODO: Check that the material interface isn't always initiliased to something other than null.
+	/// Might be after 'VisibleMesh->GetMaterial(0)->GetMaterial()'.
+	if (VisibleMesh->GetMaterial(0) != nullptr)
+	{
+		DynamicMaterial = UMaterialInstanceDynamic::Create(VisibleMesh->GetMaterial(0), this);
+		VisibleMesh->SetMaterial(0, DynamicMaterial);
+	}
 }
 
 void AEnemyCharacter::Tick( float DeltaTime )
@@ -149,12 +160,46 @@ void AEnemyCharacter::OnDeath()
 	}
 }
 
-bool AEnemyCharacter::GetIsVunerable()
+void AEnemyCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	return IsVunerable;
+	/// Triggering actor is not this actor and a player character.
+	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherActor->IsA<ABaseCharacter>()))
+	{
+		/// Make enemy character vulnerable.
+		SetIsVulnerable(true);
+
+		if (VisibleMesh->GetMaterial(0) != nullptr)
+		{
+			/// Enable vulnerability 'glow'.
+			DynamicMaterial->SetScalarParameterValue("EmissiveBrightness", VulnerableEmissionValue);
+			UE_LOG(LogTemp, Warning, TEXT("ENTER"));
+		}
+	}
 }
 
-void AEnemyCharacter::SetIsVunerable(bool Vunerable)
+void AEnemyCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	IsVunerable = Vunerable;
+	/// Triggering actor is not this actor and a player character.
+	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherActor->IsA<ABaseCharacter>()))
+	{
+		/// Make enemy character vulnerable.
+		SetIsVulnerable(false);
+
+		if (VisibleMesh->GetMaterial(0) != nullptr)
+		{
+			/// Enable vulnerability 'glow'.
+			DynamicMaterial->SetScalarParameterValue("EmissiveBrightness", 1.0f);
+			UE_LOG(LogTemp, Warning, TEXT("LEAVE"));
+		}
+	}
+}
+
+bool AEnemyCharacter::GetIsVulnerable()
+{
+	return IsVulnerable;
+}
+
+void AEnemyCharacter::SetIsVulnerable(bool Vunerable)
+{
+	IsVulnerable = Vunerable;
 }

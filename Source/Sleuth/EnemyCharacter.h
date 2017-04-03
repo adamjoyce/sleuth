@@ -35,7 +35,10 @@ class SLEUTH_API AEnemyCharacter : public ABaseCharacter
 
 	/* Is the enemy vunerable to damage? */
 	UPROPERTY(VisibleAnywhere, Category = "AI")
-	bool IsVunerable;
+	bool IsVulnerable;
+
+	/* 'Vulnerable' material emissive brightness value. */
+	float VulnerableEmissionValue;
 
 	/* Handles the enemy's senses. */
 	UPROPERTY(VisibleAnywhere, Category = "AI")
@@ -49,15 +52,27 @@ class SLEUTH_API AEnemyCharacter : public ABaseCharacter
     UPROPERTY(VisibleAnywhere)
     USpotLightComponent* VisionCone;
 
-	/* Materials for the sight cone. */
-	UPROPERTY(EditDefaultsOnly, Category = "Materials")
-	TArray<UMaterial*> Materials;
+	/* Mesh for vunerable spot at enemy back. */
+	UPROPERTY(VisibleAnywhere)
+	UBoxComponent* WeakZone;
+
+	/* Material instance for the visible mesh. */
+	UPROPERTY(VisibleAnywhere)
+	UMaterialInstanceDynamic* DynamicMaterial;
 
     /* Called when the game starts or when spawned. */
     virtual void BeginPlay() override;
 
     /* Called every frame. */
     virtual void Tick(float DeltaSeconds) override;
+
+	/* What happens when a component overlaps the weak zone. */
+	UFUNCTION()
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	/* Whats happens when a component leaves the weak zone. */
+	UFUNCTION()
+		void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 protected:
 	/* Triggered by the pawn sensing component when a pawn is spotted. */
@@ -93,9 +108,9 @@ public:
 
 	/* Gets if the enemy is vunerable to damage. */
 	UFUNCTION(BlueprintCallable, Category = "AI")
-	bool GetIsVunerable();
+	bool GetIsVulnerable();
 
 	/* Sets the vunerability of the enemy (can it be damaged?). */
 	UFUNCTION(BlueprintCallable, Category = "AI")
-	void SetIsVunerable(bool Vunerable);
+	void SetIsVulnerable(bool Vunerable);
 };
