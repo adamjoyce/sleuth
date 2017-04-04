@@ -1,6 +1,7 @@
 // Copyright Adam Joyce 2017.
 
 #include "Sleuth.h"
+#include "PlayerCharacter.h"
 #include "EnemyCharacter.h"
 #include "EnemyAIController.h"
 #include "Types.h"
@@ -162,34 +163,40 @@ void AEnemyCharacter::OnDeath()
 
 void AEnemyCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	/// Triggering actor is not this actor and a player character.
-	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherActor->IsA<ABaseCharacter>()))
+	if (GetWorld())
 	{
-		/// Make enemy character vulnerable.
-		SetIsVulnerable(true);
-
-		if (VisibleMesh->GetMaterial(0) != nullptr)
+		/// Triggering actor is not this actor and a player character.
+		if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetComponentByClass(UStaticMeshComponent::StaticClass())))
 		{
-			/// Enable vulnerability 'glow'.
-			DynamicMaterial->SetScalarParameterValue("EmissiveBrightness", VulnerableEmissionValue);
-			UE_LOG(LogTemp, Warning, TEXT("ENTER"));
+			/// Make enemy character vulnerable.
+			SetIsVulnerable(true);
+
+			if (VisibleMesh->GetMaterial(0) != nullptr)
+			{
+				/// Enable vulnerability 'glow'.
+				DynamicMaterial->SetScalarParameterValue("EmissiveBrightness", VulnerableEmissionValue);
+				UE_LOG(LogTemp, Warning, TEXT("ENTER"));
+			}
 		}
 	}
 }
 
 void AEnemyCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	/// Triggering actor is not this actor and a player character.
-	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherActor->IsA<ABaseCharacter>()))
+	if (GetWorld())
 	{
-		/// Make enemy character vulnerable.
-		SetIsVulnerable(false);
-
-		if (VisibleMesh->GetMaterial(0) != nullptr)
+		/// Triggering actor is not this actor and a player character.
+		if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetComponentByClass(UStaticMeshComponent::StaticClass())))
 		{
-			/// Enable vulnerability 'glow'.
-			DynamicMaterial->SetScalarParameterValue("EmissiveBrightness", 1.0f);
-			UE_LOG(LogTemp, Warning, TEXT("LEAVE"));
+			/// Make enemy character vulnerable.
+			SetIsVulnerable(false);
+
+			if (VisibleMesh->GetMaterial(0) != nullptr)
+			{
+				/// Enable vulnerability 'glow'.
+				DynamicMaterial->SetScalarParameterValue("EmissiveBrightness", 1.0f);
+				UE_LOG(LogTemp, Warning, TEXT("LEAVE"));
+			}
 		}
 	}
 }
