@@ -186,7 +186,9 @@ void AEnemyCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* 
 	if (GetWorld())
 	{
 		/// Triggering actor is not this actor and a player character.
-		if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetComponentByClass(UStaticMeshComponent::StaticClass())))
+		/// NOTE: Probably a better way to check if the object has died and access violations will occur.
+		if ((OverlappedComp->IsValidLowLevel() && OtherActor->IsValidLowLevel() && OtherComp->IsValidLowLevel()) ||
+			(OtherActor != nullptr && OtherActor != this && OtherComp == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetComponentByClass(UStaticMeshComponent::StaticClass())))
 		{
 			/// Make enemy character vulnerable.
 			SetIsVulnerable(false);
