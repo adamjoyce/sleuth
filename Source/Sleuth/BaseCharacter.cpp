@@ -58,7 +58,7 @@ void ABaseCharacter::OnDeath()
 	CapsuleComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	CapsuleComp->SetCollisionResponseToAllChannels(ECR_Ignore);
 
-	DetachFromControllerPendingDestroy();
+	//DetachFromControllerPendingDestroy();
 	PlayDeathAnimation();
 }
 

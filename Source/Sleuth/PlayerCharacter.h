@@ -58,6 +58,9 @@ protected:
 	/* What the character does on death. */
 	virtual void OnDeath() override;
 
+	/* Used for restarting the player character once it's life span ends. */
+	virtual void LifeSpanExpired() override;
+
 public:
 	/* Sets default values for this character's properties. */
 	APlayerCharacter();	

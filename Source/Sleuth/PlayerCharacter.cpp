@@ -83,6 +83,17 @@ void APlayerCharacter::OnDeath()
 	Super::OnDeath();
 
 	/// Resets the player.
+	//if (GetWorld())
+	//{
+	//	UGameplayStatics::GetGameMode(GetWorld())->RestartPlayer(GetWorld()->GetFirstPlayerController());
+	//}
+}
+
+void APlayerCharacter::LifeSpanExpired()
+{
+	Super::LifeSpanExpired();
+
+	/// Resets the player.
 	if (GetWorld())
 	{
 		UGameplayStatics::GetGameMode(GetWorld())->RestartPlayer(GetWorld()->GetFirstPlayerController());
