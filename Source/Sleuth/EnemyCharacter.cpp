@@ -183,23 +183,23 @@ void AEnemyCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor
 
 void AEnemyCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	//if (GetWorld())
-	//{
-	//	/// Triggering actor is not this actor and a player character.
-	//	/// NOTE: Probably a better way to check if the object has died and access violations will occur.
-	//	if (OtherActor != nullptr && OtherActor != this && OtherComp == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetComponentByClass(UStaticMeshComponent::StaticClass()))
-	//	{
-	//		/// Make enemy character vulnerable.
-	//		SetIsVulnerable(false);
+	if (GetWorld())
+	{
+		/// Triggering actor is not this actor and a player character.
+		if (OtherActor->IsPendingKill() || (OtherActor != nullptr && OtherActor != this && OtherComp == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetComponentByClass(UStaticMeshComponent::StaticClass())))
+		{
+			/// Make enemy character vulnerable.
+			SetIsVulnerable(false);
 
-	//		if (VisibleMesh->GetMaterial(0) != nullptr)
-	//		{
-	//			/// Enable vulnerability 'glow'.
-	//			DynamicMaterial->SetScalarParameterValue("EmissiveBrightness", 1.0f);
-	//			UE_LOG(LogTemp, Warning, TEXT("LEAVE"));
-	//		}
-	//	}
-	//}
+			if (VisibleMesh->GetMaterial(0) != nullptr)
+			{
+				/// Enable vulnerability 'glow'.
+				DynamicMaterial->SetScalarParameterValue("EmissiveBrightness", 1.0f);
+				UE_LOG(LogTemp, Warning, TEXT("LEAVE"));
+			}
+		}
+	}
+	UE_LOG(LogTemp, Warning, TEXT("OVERLAP END"));
 }
 
 bool AEnemyCharacter::GetIsVulnerable()

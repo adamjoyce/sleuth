@@ -32,4 +32,7 @@ protected:
 
 	/* What the character does on death. */
 	virtual void OnDeath();
+
+	/* Death animation and visual action. */
+	virtual void PlayDeathAnimation();
 };

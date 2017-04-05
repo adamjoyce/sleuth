@@ -6,6 +6,7 @@
 
 // Sets default values
 ABaseCharacter::ABaseCharacter() : Health(100.0f)
+								   //IsDying(false)
 {
  	/* Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it. */
 	PrimaryActorTick.bCanEverTick = true;
@@ -47,8 +48,45 @@ float ABaseCharacter::TakeDamage(float Damage, struct FDamageEvent const& Damage
 void ABaseCharacter::OnDeath()
 {
 	/// By default simply destroy the actor.
-	if (GetWorld())
+	//if (GetWorld())
+	//{
+	//	GetWorld()->DestroyActor(this);
+	//}
+
+	/// Disable all collision on capsule.
+	UCapsuleComponent* CapsuleComp = GetCapsuleComponent();
+	CapsuleComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	CapsuleComp->SetCollisionResponseToAllChannels(ECR_Ignore);
+
+	DetachFromControllerPendingDestroy();
+	PlayDeathAnimation();
+}
+
+void ABaseCharacter::PlayDeathAnimation()
+{
+	bool IsDying = false;
+
+	if (IsPendingKill())
 	{
-		GetWorld()->DestroyActor(this);
+		IsDying = false;
+	}
+	else
+	{
+		/// Crumble mesh.
+		UDestructibleComponent* DestructibleMesh = (UDestructibleComponent*)GetComponentByClass(UDestructibleComponent::StaticClass());
+		DestructibleMesh->ApplyDamage(10.0f, GetActorLocation(), FVector(0, 0, -1), 10.0f);
+		IsDying = true;
+	}
+
+	if (!IsDying)
+	{
+		/// Hide the character immediately.
+		TurnOff();
+		SetActorHiddenInGame(true);
+		SetLifeSpan(1.0f);
+	}
+	else
+	{
+		SetLifeSpan(5.0f);
 	}
 }
