@@ -4,12 +4,14 @@
 #include "BaseCharacter.h"
 
 
-// Sets default values
 ABaseCharacter::ABaseCharacter() : Health(100.0f)
-								   //IsDying(false)
 {
- 	/* Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it. */
+ 	/// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	/// Create the destructible mesh component.
+	DestructibleMesh = CreateDefaultSubobject<UDestructibleComponent>(TEXT("DestructibleMesh"));
+	DestructibleMesh->SetupAttachment(RootComponent);
 }
 
 float ABaseCharacter::GetHealth() const
@@ -72,9 +74,8 @@ void ABaseCharacter::PlayDeathAnimation()
 	}
 	else
 	{
-		/// Crumble mesh.
-		UDestructibleComponent* DestructibleMesh = (UDestructibleComponent*)GetComponentByClass(UDestructibleComponent::StaticClass());
-		DestructibleMesh->ApplyDamage(10.0f, GetActorLocation(), FVector(0, 0, -1), 10.0f);
+		/// Crumble mesh in direction the character is moving.
+		DestructibleMesh->ApplyRadiusDamage(10.0f, GetActorLocation(), 1.0f, 10000.0f, true);
 		IsDying = true;
 	}
 

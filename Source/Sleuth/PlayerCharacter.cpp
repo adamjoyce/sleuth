@@ -14,9 +14,9 @@ APlayerCharacter::APlayerCharacter() : MovementSpeed(2000.0f),
 	PrimaryActorTick.bCanEverTick = true;
 
 	/// Create the character's visible mesh.
-	SphereMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisibleMesh"));
-	SphereMesh->SetupAttachment(RootComponent);
-	SphereMesh->SetCollisionProfileName("NoCollision");
+	//SphereMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisibleMesh"));
+	//SphereMesh->SetupAttachment(RootComponent);
+	//SphereMesh->SetCollisionProfileName("NoCollision");
 
 	/// Spring arm for the camera.
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraAttachmentArm"));

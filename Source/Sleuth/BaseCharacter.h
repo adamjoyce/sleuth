@@ -27,6 +27,10 @@ public:
     float Health;
 
 protected:
+	/* Destrutible mesh for visibility in the scene. */
+	UPROPERTY(VisibleAnywhere)
+	UDestructibleComponent* DestructibleMesh;
+
 	/* Damage. */
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;
 

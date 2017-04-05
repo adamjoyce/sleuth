@@ -28,9 +28,9 @@ AEnemyCharacter::AEnemyCharacter() : LastSeenTime(0.0f),
 	PawnSensingComponent->SightRadius = 2000;
 
 	/// Create the visibility mesh.
-	VisibleMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisibleMesh"));
-	VisibleMesh->SetupAttachment(RootComponent);
-	VisibleMesh->SetCollisionProfileName("NoCollision");
+	//VisibleMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisibleMesh"));
+	//VisibleMesh->SetupAttachment(RootComponent);
+	//VisibleMesh->SetCollisionProfileName("NoCollision");
 
 	/// Create the weak zone at the back of the enemy.
 	WeakZone = CreateDefaultSubobject<UBoxComponent>(TEXT("WeakZone"));
@@ -61,10 +61,10 @@ void AEnemyCharacter::BeginPlay()
 
 	/// TODO: Check that the material interface isn't always initiliased to something other than null.
 	/// Might be after 'VisibleMesh->GetMaterial(0)->GetMaterial()'.
-	if (VisibleMesh->GetMaterial(0) != nullptr)
+	if (DestructibleMesh->GetMaterial(0) != nullptr)
 	{
-		DynamicMaterial = UMaterialInstanceDynamic::Create(VisibleMesh->GetMaterial(0), this);
-		VisibleMesh->SetMaterial(0, DynamicMaterial);
+		DynamicMaterial = UMaterialInstanceDynamic::Create(DestructibleMesh->GetMaterial(0), this);
+		DestructibleMesh->SetMaterial(0, DynamicMaterial);
 	}
 }
 
@@ -166,12 +166,12 @@ void AEnemyCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor
 	if (GetWorld())
 	{
 		/// Triggering actor is not this actor and a player character.
-		if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetComponentByClass(UStaticMeshComponent::StaticClass())))
+		if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetComponentByClass(UDestructibleComponent::StaticClass())))
 		{
 			/// Make enemy character vulnerable.
 			SetIsVulnerable(true);
 
-			if (VisibleMesh->GetMaterial(0) != nullptr)
+			if (DestructibleMesh->GetMaterial(0) != nullptr)
 			{
 				/// Enable vulnerability 'glow'.
 				DynamicMaterial->SetScalarParameterValue("EmissiveBrightness", VulnerableEmissionValue);
@@ -186,12 +186,12 @@ void AEnemyCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* 
 	if (GetWorld())
 	{
 		/// Triggering actor is not this actor and a player character.
-		if (OtherActor->IsPendingKill() || (OtherActor != nullptr && OtherActor != this && OtherComp == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetComponentByClass(UStaticMeshComponent::StaticClass())))
+		if (OtherActor->IsPendingKill() || (OtherActor != nullptr && OtherActor != this && OtherComp == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetComponentByClass(UDestructibleComponent::StaticClass())))
 		{
 			/// Make enemy character vulnerable.
 			SetIsVulnerable(false);
 
-			if (VisibleMesh->GetMaterial(0) != nullptr)
+			if (DestructibleMesh->GetMaterial(0) != nullptr)
 			{
 				/// Enable vulnerability 'glow'.
 				DynamicMaterial->SetScalarParameterValue("EmissiveBrightness", 1.0f);
