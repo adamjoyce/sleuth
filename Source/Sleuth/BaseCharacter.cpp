@@ -77,6 +77,7 @@ void ABaseCharacter::PlayDeathAnimation()
 		/// Explode destructible character mesh.
 		DestructibleMesh->ApplyRadiusDamage(10.0f, GetActorLocation(), 1.0f, 10000.0f, true);
 		IsDying = true;
+		UE_LOG(LogTemp, Warning, TEXT("EXPLODE"));
 	}
 
 	if (!IsDying)
@@ -88,6 +89,6 @@ void ABaseCharacter::PlayDeathAnimation()
 	}
 	else
 	{
-		SetLifeSpan(5.0f);
+		SetLifeSpan(3.0f);
 	}
 }

@@ -10,9 +10,24 @@ class SLEUTH_API APlayerCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 
-	/* Lag speed of the camera acttahed to the spring arm. */
-	float CameraLagSpeed;
+public:
+	/* Sets default values for this character's properties. */
+	APlayerCharacter();
 
+	/* Returns the current backstabable character. */
+	ABaseCharacter* GetBackstabCharacter();
+
+	/* Sets a new backstabable character. */
+	void SetBackstabCharacter(ABaseCharacter* _BackstabCharacter);
+
+protected:
+	/* What the character does on death. */
+	virtual void OnDeath() override;
+
+	/* Used for restarting the player character once it's life span ends. */
+	virtual void LifeSpanExpired() override;
+
+private:
 	/* Height of the player camera. */
 	UPROPERTY(EditDefaultsOnly, Category = "Camera")
 	float CameraHeight;
@@ -23,6 +38,12 @@ class SLEUTH_API APlayerCharacter : public ABaseCharacter
 
 	/* Camera rotation attached to spring arm. */
 	FRotator CameraRotation;
+
+	/* Lag speed of the camera acttahed to the spring arm. */
+	float CameraLagSpeed;
+
+	/* Backstabable character that is within range. */
+	ABaseCharacter* BackstabCharacter;
 
 	/* Sphere component for the pawn. */
 	USphereComponent* SphereComponent;
@@ -54,14 +75,6 @@ class SLEUTH_API APlayerCharacter : public ABaseCharacter
 	/* Moves the pawn along its right vector. */
 	void MoveRight(float AxisValue);
 
-protected:
-	/* What the character does on death. */
-	virtual void OnDeath() override;
-
-	/* Used for restarting the player character once it's life span ends. */
-	virtual void LifeSpanExpired() override;
-
-public:
-	/* Sets default values for this character's properties. */
-	APlayerCharacter();	
+	/* Attempts to backstab an enemy. */
+	void Backstab();
 };

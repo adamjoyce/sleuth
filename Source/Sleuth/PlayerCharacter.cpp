@@ -8,7 +8,8 @@
 APlayerCharacter::APlayerCharacter() : MovementSpeed(2000.0f),
 									   CameraHeight(2000.0f),
 									   CameraRotation(FRotator(-60.0f, 0.0f, 0.0f)),
-									   CameraLagSpeed(3.0f)
+									   CameraLagSpeed(3.0f),
+									   BackstabCharacter(nullptr)
 {
  	/// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -56,6 +57,8 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* InputCom
 {
 	Super::SetupPlayerInputComponent(InputComponent);
 
+	InputComponent->BindAction("Backstab", IE_Pressed, this, &APlayerCharacter::Backstab);
+
 	InputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
 	InputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
 }
@@ -75,6 +78,41 @@ void APlayerCharacter::MoveRight(float AxisValue)
 	if (MovementComponent)
 	{
 		MovementComponent->AddInputVector(GetActorRightVector() * AxisValue);
+	}
+}
+
+void APlayerCharacter::Backstab()
+{
+	if (BackstabCharacter != nullptr && IsAlive())
+	{
+		ACharacter* EnemyCharacter = Cast<ACharacter>(BackstabCharacter);
+
+		/// Kill the enemy.
+		FDamageEvent DamageEvent;
+		EnemyCharacter->TakeDamage(BackstabCharacter->GetHealth(), DamageEvent, GetController(), this);
+
+		UE_LOG(LogTemp, Warning, TEXT("BACKSTAB 'EM"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NOTHING"));
+	}
+}
+
+ABaseCharacter* APlayerCharacter::GetBackstabCharacter()
+{
+	return BackstabCharacter;
+}
+
+void APlayerCharacter::SetBackstabCharacter(ABaseCharacter* _BackstabCharacter)
+{
+	if (_BackstabCharacter)
+	{
+		BackstabCharacter = _BackstabCharacter;
+	}
+	else
+	{
+		BackstabCharacter = nullptr;
 	}
 }
 

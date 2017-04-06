@@ -155,10 +155,13 @@ bool AEnemyCharacter::IsTargetSensed()
 
 void AEnemyCharacter::OnDeath()
 {
-	if (GetWorld())
-	{
+	/// Disable sensing, vision cone, and weak zone components.
+	PawnSensingComponent->bEnableSensingUpdates = false;
+	VisionCone->SetVisibility(false);
+	WeakZone->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	WeakZone->SetCollisionResponseToAllChannels(ECR_Ignore);
 
-	}
+	Super::OnDeath();
 }
 
 void AEnemyCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -169,7 +172,11 @@ void AEnemyCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor
 		if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetComponentByClass(UCapsuleComponent::StaticClass())))
 		{
 			/// Make enemy character vulnerable.
-			SetIsVulnerable(true);
+			//SetIsVulnerable(true);
+
+			/// Update the player's backstabable character.
+			APlayerCharacter* PlayerCharacter = (APlayerCharacter*)OtherActor;
+			PlayerCharacter->SetBackstabCharacter(this);
 
 			if (DestructibleMesh->GetMaterial(0) != nullptr)
 			{
@@ -190,7 +197,10 @@ void AEnemyCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* 
 		if (OtherActor != nullptr && OtherActor != this && OtherComp == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetComponentByClass(UCapsuleComponent::StaticClass()))
 		{
 			/// Make enemy character vulnerable.
-			SetIsVulnerable(false);
+			//SetIsVulnerable(false);
+
+			APlayerCharacter* PlayerCharacter = (APlayerCharacter*)OtherActor;
+			PlayerCharacter->SetBackstabCharacter(nullptr);
 
 			if (DestructibleMesh->GetMaterial(0) != nullptr)
 			{
