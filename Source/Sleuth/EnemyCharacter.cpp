@@ -166,7 +166,7 @@ void AEnemyCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor
 	if (GetWorld())
 	{
 		/// Triggering actor is not this actor and a player character.
-		if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetComponentByClass(UDestructibleComponent::StaticClass())))
+		if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetComponentByClass(UCapsuleComponent::StaticClass())))
 		{
 			/// Make enemy character vulnerable.
 			SetIsVulnerable(true);
@@ -178,6 +178,7 @@ void AEnemyCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor
 				UE_LOG(LogTemp, Warning, TEXT("ENTER"));
 			}
 		}
+		//UE_LOG(LogTemp, Warning, TEXT("OVERLAP BEGIN"));
 	}
 }
 
@@ -186,7 +187,7 @@ void AEnemyCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* 
 	if (GetWorld())
 	{
 		/// Triggering actor is not this actor and a player character.
-		if (OtherActor->IsPendingKill() || (OtherActor != nullptr && OtherActor != this && OtherComp == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetComponentByClass(UDestructibleComponent::StaticClass())))
+		if (OtherActor != nullptr && OtherActor != this && OtherComp == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetComponentByClass(UCapsuleComponent::StaticClass()))
 		{
 			/// Make enemy character vulnerable.
 			SetIsVulnerable(false);
@@ -199,7 +200,7 @@ void AEnemyCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* 
 			}
 		}
 	}
-	UE_LOG(LogTemp, Warning, TEXT("OVERLAP END"));
+	//UE_LOG(LogTemp, Warning, TEXT("OVERLAP END"));
 }
 
 bool AEnemyCharacter::GetIsVulnerable()

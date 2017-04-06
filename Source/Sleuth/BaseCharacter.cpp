@@ -74,7 +74,7 @@ void ABaseCharacter::PlayDeathAnimation()
 	}
 	else
 	{
-		/// Crumble mesh in direction the character is moving.
+		/// Explode destructible character mesh.
 		DestructibleMesh->ApplyRadiusDamage(10.0f, GetActorLocation(), 1.0f, 10000.0f, true);
 		IsDying = true;
 	}
